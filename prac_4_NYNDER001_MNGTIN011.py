@@ -226,3 +226,34 @@ GPIO.add_event_detect(freq, GPIO.RISING, callback= onFreq, bouncetime=500) # Fre
 GPIO.add_event_detect(stop, GPIO.RISING, callback= onStop, bouncetime=500) # Stop Switch
 
 GPIO.add_event_detect(display, GPIO.RISING, callback= onDisplay, bouncetime=1000) # Display Switch
+
+try:
+    while True:
+        if monitor:
+            # Read the data
+            sensr_data = GetData (light)    # Measure light
+            arrLight.append(ConvertLight(sensr_data,2))
+            
+            sensr_data = GetData (temp)     # Measure temp
+            arrTemp.append(ConvertTemp(sensr_data,2))
+
+            sensr_data = GetData (pot)      # Measure pot
+            arrPot.append(ConvertVolts(sensr_data,2))
+
+            arrTime.append(getTime())
+            arrTimer.append(Timer())
+            
+            i = len(arrTimer) - 1
+            print(arrTime[i], arrTimer[i], arrPot[i], "V", arrTemp[i], "C", arrLight[i], "%")
+            count += 1
+            if count > 5:
+                count = 5
+                arrLight.pop(0)
+                arrTemp.pop(0)
+                arrPot.pop(0)
+                arrTime.pop(0)
+                arrTimer.pop(0)
+            # Wait before repeating loop
+        time.sleep(tFreq)
+except KeyboardInterrupt:
+    spi.close()
