@@ -35,3 +35,26 @@ def ConvertTemp(data,places):
     temp = (data * 100) / float(1023)
     temp = round(temp,places)
     return temp
+
+# Define switch pins
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
+
+reset = 4
+freq = 17
+stop = 27
+display = 22
+
+GPIO.setup(reset, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(freq, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(stop, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(display, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+#Interrupts
+GPIO.add_event_detect(reset, GPIO.RISING, callback= onReset, bouncetime=500) # Reset Switch
+
+GPIO.add_event_detect(freq, GPIO.RISING, callback= onFreq, bouncetime=500) # Frequency Switch 
+
+GPIO.add_event_detect(stop, GPIO.RISING, callback= onStop, bouncetime=500) # Stop Switch
+
+GPIO.add_event_detect(display, GPIO.RISING, callback= onDisplay, bouncetime=1000) # Display Switch
