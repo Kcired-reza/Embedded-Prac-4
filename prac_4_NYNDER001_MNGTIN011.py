@@ -63,6 +63,36 @@ def onFreq(channel):
         
 monitor = True
 
+# Reset Switch
+def onReset(channel):
+    print("Reset")
+    global arrLight
+    global arrTemp
+    global arrPot
+    global arrTime
+    global arrTimer
+    global count
+    global resetHours
+    global resetMinutes
+    global resetSeconds
+    
+    arrLight = []
+    arrTemp = []
+    arrPot = []
+    arrTime = []
+    arrTimer = []
+    count = 0
+    resetHours = getHours()
+    resetMinutes = getMinutes()
+    resetSeconds = getSeconds()
+    global tFreq
+    if tFreq == 0.5:
+        tFreq = 1
+    elif tFreq == 1:
+        tFreq = 2
+    else:
+        tFreq = 0.5
+        
 # Stop Switch
 def onStop(channel):
     global monitor
@@ -174,6 +204,20 @@ def Timer():
     strTime = hour + ':' +  minute + ':' + second
     return strTime
 
+# Display Switch
+def onDisplay(channel):
+    print("Time     Timer    Pot   Temp  Light")
+    for i in range(count):
+        if i < 5:
+            print(arrTime[i], arrTimer[i], arrPot[i], "V", arrTemp[i], "C", arrLight[i], "%")
+    global tFreq
+    if tFreq == 0.5:
+        tFreq = 1
+    elif tFreq == 1:
+        tFreq = 2
+    else:
+        tFreq = 0.5
+        
 #Interrupts
 GPIO.add_event_detect(reset, GPIO.RISING, callback= onReset, bouncetime=500) # Reset Switch
 
