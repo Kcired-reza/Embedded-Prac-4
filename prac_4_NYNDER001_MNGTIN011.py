@@ -36,6 +36,35 @@ def ConvertTemp(data,places):
     temp = round(temp,places)
     return temp
 
+tFreq = 0.5
+
+# Frequency Switch
+def onFreq(channel):
+    global tFreq
+    if tFreq == 0.5:
+        tFreq = 1
+    elif tFreq == 1:
+        tFreq = 2
+    else:
+        tFreq = 0.5
+        
+monitor = True
+
+# Stop Switch
+def onStop(channel):
+    global monitor
+    if monitor == False:
+        monitor = True
+    else:
+        monitor = False
+    global tFreq
+    if tFreq == 0.5:
+        tFreq = 1
+    elif tFreq == 1:
+        tFreq = 2
+    else:
+        tFreq = 0.5
+        
 # Define switch pins
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
